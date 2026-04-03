@@ -1,8 +1,6 @@
-# Filo Theme Settings
+# Filos UI Tweaks
 
-A small SillyTavern extension that adjusts how the UI behaves on desktop and mobile-sized screens.
-
-It adds a settings drawer to the SillyTavern extensions settings panel and applies its changes immediately when the app loads or when the window is resized.
+A small, opinionated SillyTavern extension that adjusts how the UI behaves on desktop and mobile-sized screens.
 
 It also fixes some quirks on iOS devices, especially on large iPads such as the iPad Pro.
 
@@ -15,7 +13,7 @@ It has been tested only with the default SillyTavern UI.
 ## Where to find the settings
 
 Open SillyTavern, then go to the extensions settings area.  
-This extension adds a drawer named **Filo Theme Settings**.
+This extension adds a drawer named **Filos UI Tweaks**.
 
 Each setting has:
 

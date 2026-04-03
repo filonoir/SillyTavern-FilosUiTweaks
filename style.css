@@ -1,18 +1,18 @@
 html {
 
-    &.filotheme-desktop-chat-size {
-        --filotheme-sheldWidth: max(var(--sheldWidth), var(--filotheme-min-desk-chat-size));
+    &.fuit-desktop-chat-size {
+        --fuit-sheldWidth: max(var(--sheldWidth), var(--fuit-min-desk-chat-size));
 
         body {
-            --sheldWidth: var(--filotheme-sheldWidth);
+            --sheldWidth: var(--fuit-sheldWidth);
         }
     }
 
-    &.filotheme-desktop-panels-fixed {
+    &.fuit-desktop-panels-fixed {
 
         #left-nav-panel,
         #right-nav-panel {
-            width: var(--filotheme-min-side-panel-size);
+            width: var(--fuit-min-side-panel-size);
         }
 
         .fillLeft, 
@@ -21,7 +21,7 @@ html {
         }
     }
 
-    &.filotheme-is-desktop-size:not(.filotheme-desktop-panels-fixed) {
+    &.fuit-is-desktop-size:not(.fuit-desktop-panels-fixed) {
 
         .fillLeft, 
         .fillRight {
@@ -32,7 +32,7 @@ html {
 
 @supports (-webkit-touch-callout: none) {
 
-    html.filotheme-desktop-chat-size {
+    html.fuit-desktop-chat-size {
 
         .drawer-content {
             width: 100%;
@@ -59,7 +59,7 @@ html {
 }
 
 
-html.filotheme-mobile-adjust {
+html.fuit-mobile-adjust {
 
     --topBarIconSize: calc(var(--mainFontSize) * 1.5);
     --bottomFormIconSize: calc(var(--mainFontSize) * 1.5);
@@ -89,22 +89,22 @@ html.filotheme-mobile-adjust {
     }
 }
 
-#filotheme_settings {
+#fuit_settings {
 
-    .filotheme-range-row {
+    .fuit-range-row {
         display: flex;
         gap: 0.75rem;
         align-items: center;
         margin-top: 0.5rem;
     }
 
-    .filotheme-setting-label {
+    .fuit-setting-label {
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
     }
 
-    .filotheme-info-icon {
+    .fuit-info-icon {
         cursor: help;
     }
 
@@ -137,7 +137,7 @@ html.filotheme-mobile-adjust {
         }
     }
 
-    .filotheme-range-unit {
+    .fuit-range-unit {
         min-width: 2rem;
     }
 }

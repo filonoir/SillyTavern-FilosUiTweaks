@@ -1,7 +1,7 @@
-const EXTENSION_NAME = "Filo Theme Settings";
-const TEMPLATE_ROOT = "third-party/SillyTavern-FiloThemeSettings";
+const EXTENSION_NAME = "Filos UI Tweaks";
+const TEMPLATE_ROOT = "third-party/SillyTavern-FilosUiTweaks";
 const SETTINGS_PANEL_SELECTOR = "#extensions_settings2";
-const SETTINGS_ROOT_ID = "filotheme_settings";
+const SETTINGS_ROOT_ID = "FilosUiTweaks";
 const SCREEN_SIZE_INPUT_STEP = 10;
 const SCREEN_MOBILE_BREAKPOINT = 1000;
 
@@ -14,13 +14,13 @@ const MAX_SIDE_PANEL_SIZE = SCREEN_MOBILE_BREAKPOINT / 2;
 const MIN_MOBILE_ADJUST_SIZE = 300 - SCREEN_SIZE_INPUT_STEP;
 const MAX_MOBILE_ADJUST_SIZE = SCREEN_MOBILE_BREAKPOINT;
 
-const MIN_DESK_CHAT_SIZE_PROPERTY = "--filotheme-min-desk-chat-size";
-const MIN_SIDE_PANEL_SIZE_PROPERTY = "--filotheme-min-side-panel-size";
-const MAX_MOBILE_ADJUST_PROPERTY = "--filotheme-max-mobile-adjust";
-const MOBILE_ADJUST_CLASS = "filotheme-mobile-adjust";
-const IS_DESKTOP_SIZE_CLASS = "filotheme-is-desktop-size";
-const DESKTOP_CHAT_SIZE_CLASS = "filotheme-desktop-chat-size";
-const DESKTOP_PANELS_FIXED_CLASS = "filotheme-desktop-panels-fixed";
+const MIN_DESK_CHAT_SIZE_PROPERTY = "--fuit-min-desk-chat-size";
+const MIN_SIDE_PANEL_SIZE_PROPERTY = "--fuit-min-side-panel-size";
+const MAX_MOBILE_ADJUST_PROPERTY = "--fuit-max-mobile-adjust";
+const MOBILE_ADJUST_CLASS = "fuit-mobile-adjust";
+const IS_DESKTOP_SIZE_CLASS = "fuit-is-desktop-size";
+const DESKTOP_CHAT_SIZE_CLASS = "fuit-desktop-chat-size";
+const DESKTOP_PANELS_FIXED_CLASS = "fuit-desktop-panels-fixed";
 const DEFAULT_SETTINGS = Object.freeze({
     minDeskChatSize: 950,
     minSidePanelSize: 300,
@@ -117,18 +117,18 @@ function applySettingsToDocument() {
 
 function syncSettingsUi() {
     const { minDeskChatSize, minSidePanelSize, maxMobileAdjust } = getSettings();
-    const desktopRangeInput = $("#filotheme_min_desk_chat_size");
-    const desktopNumberInput = $("#filotheme_min_desk_chat_size_value");
-    const sidePanelRangeInput = $("#filotheme_min_side_panel_size");
-    const sidePanelNumberInput = $("#filotheme_min_side_panel_size_value");
-    const mobileRangeInput = $("#filotheme_max_mobile_adjust");
-    const mobileNumberInput = $("#filotheme_max_mobile_adjust_value");
+    const desktopRangeInput = $("#fuit_min_desk_chat_size");
+    const desktopNumberInput = $("#fuit_min_desk_chat_size_value");
+    const sidePanelRangeInput = $("#fuit_min_side_panel_size");
+    const sidePanelNumberInput = $("#fuit_min_side_panel_size_value");
+    const mobileRangeInput = $("#fuit_max_mobile_adjust");
+    const mobileNumberInput = $("#fuit_max_mobile_adjust_value");
     const desktopDrawerItem = desktopRangeInput.closest(".drawer-item");
     const sidePanelDrawerItem = sidePanelRangeInput.closest(".drawer-item");
     const mobileDrawerItem = mobileRangeInput.closest(".drawer-item");
-    const desktopUnitOutput = desktopDrawerItem.find(".filotheme-range-unit");
-    const sidePanelUnitOutput = sidePanelDrawerItem.find(".filotheme-range-unit");
-    const mobileUnitOutput = mobileDrawerItem.find(".filotheme-range-unit");
+    const desktopUnitOutput = desktopDrawerItem.find(".fuit-range-unit");
+    const sidePanelUnitOutput = sidePanelDrawerItem.find(".fuit-range-unit");
+    const mobileUnitOutput = mobileDrawerItem.find(".fuit-range-unit");
     const hasDesktopChatSizeSetting = minDeskChatSize !== MIN_DESK_CHAT_SIZE;
     const hasSidePanelSizeSetting = minSidePanelSize !== MIN_SIDE_PANEL_SIZE;
     const hasMobileAdjustSettingSetting = maxMobileAdjust !== MIN_MOBILE_ADJUST_SIZE;
@@ -195,12 +195,12 @@ function saveMaxMobileAdjust(nextValue) {
 }
 
 function bindSettingsUi() {
-    const desktopRangeInput = $("#filotheme_min_desk_chat_size");
-    const desktopNumberInput = $("#filotheme_min_desk_chat_size_value");
-    const sidePanelRangeInput = $("#filotheme_min_side_panel_size");
-    const sidePanelNumberInput = $("#filotheme_min_side_panel_size_value");
-    const mobileRangeInput = $("#filotheme_max_mobile_adjust");
-    const mobileNumberInput = $("#filotheme_max_mobile_adjust_value");
+    const desktopRangeInput = $("#fuit_min_desk_chat_size");
+    const desktopNumberInput = $("#fuit_min_desk_chat_size_value");
+    const sidePanelRangeInput = $("#fuit_min_side_panel_size");
+    const sidePanelNumberInput = $("#fuit_min_side_panel_size_value");
+    const mobileRangeInput = $("#fuit_max_mobile_adjust");
+    const mobileNumberInput = $("#fuit_max_mobile_adjust_value");
 
     if (
         !desktopRangeInput.length
@@ -213,34 +213,34 @@ function bindSettingsUi() {
         return;
     }
 
-    desktopRangeInput.off(".filotheme");
-    desktopNumberInput.off(".filotheme");
-    sidePanelRangeInput.off(".filotheme");
-    sidePanelNumberInput.off(".filotheme");
-    mobileRangeInput.off(".filotheme");
-    mobileNumberInput.off(".filotheme");
+    desktopRangeInput.off(".fuit");
+    desktopNumberInput.off(".fuit");
+    sidePanelRangeInput.off(".fuit");
+    sidePanelNumberInput.off(".fuit");
+    mobileRangeInput.off(".fuit");
+    mobileNumberInput.off(".fuit");
 
-    desktopRangeInput.on("input.filotheme change.filotheme", (event) => {
+    desktopRangeInput.on("input.fuit change.fuit", (event) => {
         saveMinDeskChatSize(event.target.value);
     });
 
-    desktopNumberInput.on("input.filotheme change.filotheme", (event) => {
+    desktopNumberInput.on("input.fuit change.fuit", (event) => {
         saveMinDeskChatSize(event.target.value);
     });
 
-    sidePanelRangeInput.on("input.filotheme change.filotheme", (event) => {
+    sidePanelRangeInput.on("input.fuit change.fuit", (event) => {
         saveMinSidePanelSize(event.target.value);
     });
 
-    sidePanelNumberInput.on("input.filotheme change.filotheme", (event) => {
+    sidePanelNumberInput.on("input.fuit change.fuit", (event) => {
         saveMinSidePanelSize(event.target.value);
     });
 
-    mobileRangeInput.on("input.filotheme change.filotheme", (event) => {
+    mobileRangeInput.on("input.fuit change.fuit", (event) => {
         saveMaxMobileAdjust(event.target.value);
     });
 
-    mobileNumberInput.on("input.filotheme change.filotheme", (event) => {
+    mobileNumberInput.on("input.fuit change.fuit", (event) => {
         saveMaxMobileAdjust(event.target.value);
     });
 

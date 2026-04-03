@@ -1,0 +1,100 @@
+<div id="filotheme_settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>{{extensionName}}</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+            <div class="drawer-item set-min-desk-chat-size">
+                <label for="filotheme_min_desk_chat_size" class="filotheme-setting-label">
+                    <span>Minimum desktop chat size</span>
+                    <i
+                        class="fa-solid fa-circle-info filotheme-info-icon opacity50p"
+                        title="Sets the minimum size of the chat window for desktop / large screens. The minimum value disables the setting."
+                    ></i>
+                </label>
+                <div class="filotheme-range-row">
+                    <input
+                        id="filotheme_min_desk_chat_size"
+                        class="neo-range-slider"
+                        type="range"
+                        min="{{minDeskChatSizeMin}}"
+                        max="{{minDeskChatSizeMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{minDeskChatSize}}"
+                    />
+                    <input
+                        id="filotheme_min_desk_chat_size_value"
+                        class="neo-range-input"
+                        type="number"
+                        min="{{minDeskChatSizeMin}}"
+                        max="{{minDeskChatSizeMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{minDeskChatSize}}"
+                    />
+                    <span class="filotheme-range-unit">px</span>
+                </div>
+            </div>
+            <div class="drawer-item set-min-side-panel-size">
+                <label for="filotheme_min_side_panel_size" class="filotheme-setting-label">
+                    <span>Minimum desktop side bar size</span>
+                    <i
+                        class="fa-solid fa-circle-info filotheme-info-icon opacity50p"
+                        title="Sets the minimum size of the desktop side bars. The minimum value disables the setting."
+                    ></i>
+                </label>
+                <div class="filotheme-range-row">
+                    <input
+                        id="filotheme_min_side_panel_size"
+                        class="neo-range-slider"
+                        type="range"
+                        min="{{minSidePanelSizeMin}}"
+                        max="{{minSidePanelSizeMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{minSidePanelSize}}"
+                    />
+                    <input
+                        id="filotheme_min_side_panel_size_value"
+                        class="neo-range-input"
+                        type="number"
+                        min="{{minSidePanelSizeMin}}"
+                        max="{{minSidePanelSizeMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{minSidePanelSize}}"
+                    />
+                    <span class="filotheme-range-unit">px</span>
+                </div>
+            </div>
+            <div class="drawer-item set-max-mobile-adjust">
+                <label for="filotheme_max_mobile_adjust" class="filotheme-setting-label">
+                    <span>Mobile adjustment maximum screen size</span>
+                    <i
+                        class="fa-solid fa-circle-info filotheme-info-icon opacity50p"
+                        title="Sets the maximum screen size for mobile adjustments. The minimum value disables the setting."
+                    ></i>
+                </label>
+                <div class="filotheme-range-row">
+                    <input
+                        id="filotheme_max_mobile_adjust"
+                        class="neo-range-slider"
+                        type="range"
+                        min="{{maxMobileAdjustMin}}"
+                        max="{{maxMobileAdjustMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{maxMobileAdjust}}"
+                    />
+                    <input
+                        id="filotheme_max_mobile_adjust_value"
+                        class="neo-range-input"
+                        type="number"
+                        min="{{maxMobileAdjustMin}}"
+                        max="{{maxMobileAdjustMax}}"
+                        step="{{screenSizeInputStep}}"
+                        value="{{maxMobileAdjust}}"
+                    />
+                    <span class="filotheme-range-unit">px</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+{
+    "display_name": "Filo Theme Settings",
+    "loading_order": 200, 
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Filonoir",
+    "version": "1.0.0",
+    "auto_update": false,
+    "minimum_client_version": "1.17.0",
+    "hooks": {
+        "activate": "activate"
+    }
+}

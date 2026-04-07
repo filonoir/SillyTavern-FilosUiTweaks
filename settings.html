@@ -1,4 +1,4 @@
-<div id="fuit_settings">
+<div id="{{settingsRootId}}" class="extension_container">
     <div class="inline-drawer">
         <div class="inline-drawer-toggle inline-drawer-header">
             <b>{{extensionName}}</b>
@@ -10,7 +10,7 @@
                     <span>Minimum desktop chat size</span>
                     <i
                         class="fa-solid fa-circle-info fuit-info-icon opacity50p"
-                        title="Sets the minimum size of the chat window for desktop / large screens. The minimum value disables the setting."
+                        title="Sets the minimum size of the chat window for desktop / large screens. Push the slider to the left to disable this."
                     ></i>
                 </label>
                 <div class="fuit-range-row">
@@ -35,12 +35,13 @@
                     <span class="fuit-range-unit">px</span>
                 </div>
             </div>
+            <hr>
             <div class="drawer-item set-min-side-panel-size">
                 <label for="fuit_min_side_panel_size" class="fuit-setting-label">
                     <span>Minimum desktop side bar size</span>
                     <i
                         class="fa-solid fa-circle-info fuit-info-icon opacity50p"
-                        title="Sets the minimum size of the desktop side bars. The minimum value disables the setting."
+                        title="Sets the minimum size of the side bars for desktop / large screens. Push the slider to the left to disable this."
                     ></i>
                 </label>
                 <div class="fuit-range-row">
@@ -65,12 +66,13 @@
                     <span class="fuit-range-unit">px</span>
                 </div>
             </div>
+            <hr>
             <div class="drawer-item set-max-mobile-adjust">
                 <label for="fuit_max_mobile_adjust" class="fuit-setting-label">
                     <span>Mobile adjustment maximum screen size</span>
                     <i
                         class="fa-solid fa-circle-info fuit-info-icon opacity50p"
-                        title="Sets the maximum screen size for mobile adjustments. The minimum value disables the setting."
+                        title="Adjusts some styles for phone / small screens, such as making the buttons smaller to fit the width of the phone and hiding the avatars images. Push the slider to the left to disable this."
                     ></i>
                 </label>
                 <div class="fuit-range-row">
@@ -94,6 +96,20 @@
                     />
                     <span class="fuit-range-unit">px</span>
                 </div>
+            </div>
+            <hr>
+            <div class="drawer-item set-replace-mobile-css">
+                <label for="fuit_replace_mobile_css" class="fuit-setting-label fuit-checkbox">
+                    <input
+                        id="fuit_replace_mobile_css"
+                        type="checkbox"
+                    />
+                    <span>Replace mobile CSS</span>
+                    <i
+                        class="fa-solid fa-circle-info fuit-info-icon opacity50p"
+                        title="Replace the default mobile CSS with an opinionated version that contains some tweaks, especially for large iPad screens."
+                    ></i>                    
+                </label>
             </div>
         </div>
     </div>

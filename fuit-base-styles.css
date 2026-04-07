@@ -1,0 +1,184 @@
+html {
+
+    &.fuit-fix-chat {
+        --fuit-sheldWidth: max(var(--sheldWidth), var(--fuit-desk-chat-size));
+
+        body {
+            --sheldWidth: var(--fuit-sheldWidth);
+        }
+    }
+
+        &.fuit-fix-panels {
+
+            #left-nav-panel,
+            #right-nav-panel {
+                --fuit-panel-gradient-start: rgba(75, 75, 75, 0.75);
+                --fuit-panel-gradient-end: rgba(75, 75, 75, 0);
+                --fuit-panel-gradient-size: calc(100dvw - var(--fuit-side-panel-size));
+
+                width: var(--fuit-side-panel-size);
+                height: 100dvh;
+                overflow: visible;
+                top: var(--topBarBlockSize);
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    width: var(--fuit-panel-gradient-size);
+                    height: 100%;
+                    pointer-events: none;
+                    -webkit-backdrop-filter: blur(3px);
+                    backdrop-filter: blur(3px);
+                }
+            }
+    
+            #left-nav-panel {
+                left: 0;
+                &::after {
+                    right: calc(-1 * var(--fuit-panel-gradient-size));
+                }
+            }
+    
+            #right-nav-panel {
+                right: 0;
+                &::after {
+                    left: calc(-1 * var(--fuit-panel-gradient-size));
+                }
+            }
+        }
+
+    &.fuit-desktop-size:not(.fuit-fix-panels) {
+
+        .fillLeft, 
+        .fillRight {
+            max-height: 100%;
+        }
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+
+    html.fuit-css-disabled {
+        #form_sheld {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    }
+
+    html.fuit-fix-chat.fuit-css-disabled {
+
+        .drawer-content {
+            width: 100%;
+        }
+        
+        #left-nav-panel,
+        #right-nav-panel {
+            width: 50% !important;
+        }
+
+        #left-nav-panel {
+            margin-left: 0;
+        }
+        
+        #right-nav-panel {
+            margin-right: 0;
+        }
+
+        .fillLeft, 
+        .fillRight {
+            top: var(--topBarBlockSize) !important;
+        }
+    }
+}
+
+
+html.fuit-mobile-adjust {
+
+    --topBarIconSize: calc(var(--mainFontSize) * 1.5);
+    --bottomFormIconSize: calc(var(--mainFontSize) * 1.5);
+    --mes-right-spacing: 0;
+
+    .mesAvatarWrapper {
+        display: none;
+    }
+
+    .mes_block .ch_name {
+        display: flex;
+        flex-direction: column;
+
+        > div {
+            width: 100%;
+        }
+
+        > div > div:first-child {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .name_text {
+            width: 100%;
+        }
+    }
+}
+
+#fuit_container {
+
+    .fuit-range-row {
+
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+
+        .neo-range-slider {
+            flex: 1 1 auto;
+        }
+        
+        .neo-range-input {
+            width: 5.5rem;
+            flex: 0 0 auto;
+        }        
+    }
+
+    .fuit-checkbox {
+
+        display: flex;
+
+        input[type="checkbox"] {
+            margin: 0 10px 0 1px;
+            transform: none;
+        }
+    }
+
+    .fuit-setting-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .fuit-info-icon {
+        cursor: help;
+    }
+
+    .inline-drawer-content {
+        margin-left: 6px;
+        margin-right: 10px
+    }
+
+    .drawer-item {
+        margin: 5px 0;
+
+        &.setting-disabled {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+
+            .neo-range-input {
+                visibility: hidden;
+            }
+        }
+    }
+
+    .fuit-range-unit {
+        min-width: 2rem;
+    }
+}

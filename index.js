@@ -1,7 +1,7 @@
 const EXTENSION_NAME = "Filos UI Tweaks";
 const TEMPLATE_ROOT = "third-party/SillyTavern-FilosUiTweaks";
 const SETTINGS_PANEL_SELECTOR = "#extensions_settings2";
-const SETTINGS_ROOT_ID = "FilosUiTweaks";
+const SETTINGS_ROOT_ID = "fuit_container";
 const SCREEN_SIZE_INPUT_STEP = 10;
 const SCREEN_MOBILE_BREAKPOINT = 1000;
 
@@ -14,17 +14,27 @@ const MAX_SIDE_PANEL_SIZE = SCREEN_MOBILE_BREAKPOINT / 2;
 const MIN_MOBILE_ADJUST_SIZE = 300 - SCREEN_SIZE_INPUT_STEP;
 const MAX_MOBILE_ADJUST_SIZE = SCREEN_MOBILE_BREAKPOINT;
 
-const MIN_DESK_CHAT_SIZE_PROPERTY = "--fuit-min-desk-chat-size";
-const MIN_SIDE_PANEL_SIZE_PROPERTY = "--fuit-min-side-panel-size";
-const MAX_MOBILE_ADJUST_PROPERTY = "--fuit-max-mobile-adjust";
-const MOBILE_ADJUST_CLASS = "fuit-mobile-adjust";
-const IS_DESKTOP_SIZE_CLASS = "fuit-is-desktop-size";
-const DESKTOP_CHAT_SIZE_CLASS = "fuit-desktop-chat-size";
-const DESKTOP_PANELS_FIXED_CLASS = "fuit-desktop-panels-fixed";
+const PROPERTY_DVH = "--fuit-dvh";
+const PROPERTY_DVH_OFFSET = "--fuit-dvh-offset";
+const PROPERTY_DESK_CHAT_SIZE = "--fuit-desk-chat-size";
+const PROPERTY_SIDE_PANEL_SIZE = "--fuit-side-panel-size";
+
+const MOBILE_CSS_DEFAULT_SELECTOR = 'link[href="css/mobile-styles.css"]';
+const MOBILE_CSS_REPLACEMENT_ID = "fuit_mobile_styles";
+const MOBILE_CSS_REPLACEMENT_URL = `/scripts/extensions/${TEMPLATE_ROOT}/fiut-mobile-styles.css`;
+
+const CLASS_MOBILE_ADJUST_ENABLED = "fuit-mobile-adjust";
+const CLASS_IS_DESKTOP_SIZE = "fuit-desktop-size";
+const CLASS_FIX_DESKTOP_CHAT = "fuit-fix-chat";
+const CLASS_FIX_DESKTOP_PANELS = "fuit-fix-panels";
+const CLASS_MOBILE_CSS_ENABLED = "fuit-css-enabled";
+const CLASS_MOBILE_CSS_DISABLED_CLASS = "fuit-css-disabled";
+
 const DEFAULT_SETTINGS = Object.freeze({
-    minDeskChatSize: 950,
-    minSidePanelSize: 300,
+    minDeskChatSize: 1000,
+    minSidePanelSize: 400,
     maxMobileAdjust: 700,
+    replaceMobileCss: true,
 });
 
 let hasInitialized = false;
@@ -72,12 +82,41 @@ function getSettings() {
         MAX_MOBILE_ADJUST_SIZE,
         DEFAULT_SETTINGS.maxMobileAdjust,
     );
+    settings.replaceMobileCss = settings.replaceMobileCss !== false;
 
     return settings;
 }
 
+function applyMobileCssReplacement() {
+    const { replaceMobileCss } = getSettings();
+    const defaultMobileCss = document.querySelector(MOBILE_CSS_DEFAULT_SELECTOR);
+    const replacementMobileCss = document.getElementById(MOBILE_CSS_REPLACEMENT_ID);
+
+    if (!defaultMobileCss) {
+        replacementMobileCss?.remove();
+        return;
+    }
+
+    defaultMobileCss.disabled = replaceMobileCss;
+
+    if (!replaceMobileCss) {
+        replacementMobileCss?.remove();
+        return;
+    }
+
+    if (replacementMobileCss) {
+        return;
+    }
+
+    const link = document.createElement("link");
+    link.id = MOBILE_CSS_REPLACEMENT_ID;
+    link.rel = "stylesheet";
+    link.href = MOBILE_CSS_REPLACEMENT_URL;
+    defaultMobileCss.insertAdjacentElement("afterend", link);
+}
+
 function applySettingsToDocument() {
-    const { minDeskChatSize, minSidePanelSize, maxMobileAdjust } = getSettings();
+    const { minDeskChatSize, minSidePanelSize, maxMobileAdjust, replaceMobileCss } = getSettings();
 
     const isDesktopSize = window.innerWidth > SCREEN_MOBILE_BREAKPOINT;
 
@@ -91,38 +130,39 @@ function applySettingsToDocument() {
 
     const html = document.documentElement;
 
-    html.classList.toggle(IS_DESKTOP_SIZE_CLASS, isDesktopSize);
+    html.classList.toggle(CLASS_IS_DESKTOP_SIZE, isDesktopSize);
+    html.classList.toggle(CLASS_MOBILE_CSS_ENABLED, replaceMobileCss);
+    html.classList.toggle(CLASS_MOBILE_CSS_DISABLED_CLASS, !replaceMobileCss);
+    
+    setViewportOffset();
+    html.style.setProperty(PROPERTY_DVH, `${window.visualViewport.height}px`);
 
-    html.classList.toggle(DESKTOP_CHAT_SIZE_CLASS, hasDesktopChatSize);
+    html.classList.toggle(CLASS_FIX_DESKTOP_CHAT, hasDesktopChatSize);
     if (hasDesktopChatSizeSetting) {
-        html.style.setProperty(MIN_DESK_CHAT_SIZE_PROPERTY, `${minDeskChatSize}px`);
+        html.style.setProperty(PROPERTY_DESK_CHAT_SIZE, `${minDeskChatSize}px`);
     } else {
-        html.style.removeProperty(MIN_DESK_CHAT_SIZE_PROPERTY);
+        html.style.removeProperty(PROPERTY_DESK_CHAT_SIZE);
     }
 
-    html.classList.toggle(DESKTOP_PANELS_FIXED_CLASS, hasFixedPanels);
+    html.classList.toggle(CLASS_FIX_DESKTOP_PANELS, hasFixedPanels);
     if (hasSidePanelSizeSetting) {
-        html.style.setProperty(MIN_SIDE_PANEL_SIZE_PROPERTY, `${minSidePanelSize}px`);
+        html.style.setProperty(PROPERTY_SIDE_PANEL_SIZE, `${minSidePanelSize}px`);
     } else {
-        html.style.removeProperty(MIN_SIDE_PANEL_SIZE_PROPERTY);
+        html.style.removeProperty(PROPERTY_SIDE_PANEL_SIZE);
     }
 
-    html.classList.toggle(MOBILE_ADJUST_CLASS, hasMobileAdjust);
-    if (hasMobileAdjustSetting) {
-        html.style.setProperty(MAX_MOBILE_ADJUST_PROPERTY, `${maxMobileAdjust}px`);
-    } else {
-        html.style.removeProperty(MAX_MOBILE_ADJUST_PROPERTY);
-    }
+    html.classList.toggle(CLASS_MOBILE_ADJUST_ENABLED, hasMobileAdjust);
 }
 
 function syncSettingsUi() {
-    const { minDeskChatSize, minSidePanelSize, maxMobileAdjust } = getSettings();
+    const { minDeskChatSize, minSidePanelSize, maxMobileAdjust, replaceMobileCss } = getSettings();
     const desktopRangeInput = $("#fuit_min_desk_chat_size");
     const desktopNumberInput = $("#fuit_min_desk_chat_size_value");
     const sidePanelRangeInput = $("#fuit_min_side_panel_size");
     const sidePanelNumberInput = $("#fuit_min_side_panel_size_value");
     const mobileRangeInput = $("#fuit_max_mobile_adjust");
     const mobileNumberInput = $("#fuit_max_mobile_adjust_value");
+    const replaceMobileCssInput = $("#fuit_replace_mobile_css");
     const desktopDrawerItem = desktopRangeInput.closest(".drawer-item");
     const sidePanelDrawerItem = sidePanelRangeInput.closest(".drawer-item");
     const mobileDrawerItem = mobileRangeInput.closest(".drawer-item");
@@ -147,6 +187,8 @@ function syncSettingsUi() {
     mobileNumberInput.val(String(maxMobileAdjust));
     mobileDrawerItem.toggleClass("setting-disabled", !hasMobileAdjustSettingSetting);
     mobileUnitOutput.text(hasMobileAdjustSettingSetting ? "px" : "off");
+
+    replaceMobileCssInput.prop("checked", replaceMobileCss);
 }
 
 function saveMinDeskChatSize(nextValue) {
@@ -194,6 +236,16 @@ function saveMaxMobileAdjust(nextValue) {
     saveSettingsDebounced();
 }
 
+function saveReplaceMobileCss(nextValue) {
+    const settings = getSettings();
+    const { saveSettingsDebounced } = SillyTavern.getContext();
+
+    settings.replaceMobileCss = Boolean(nextValue);
+    syncSettingsUi();
+    applyMobileCssReplacement();
+    saveSettingsDebounced();
+}
+
 function bindSettingsUi() {
     const desktopRangeInput = $("#fuit_min_desk_chat_size");
     const desktopNumberInput = $("#fuit_min_desk_chat_size_value");
@@ -201,6 +253,7 @@ function bindSettingsUi() {
     const sidePanelNumberInput = $("#fuit_min_side_panel_size_value");
     const mobileRangeInput = $("#fuit_max_mobile_adjust");
     const mobileNumberInput = $("#fuit_max_mobile_adjust_value");
+    const replaceMobileCssInput = $("#fuit_replace_mobile_css");
 
     if (
         !desktopRangeInput.length
@@ -209,6 +262,7 @@ function bindSettingsUi() {
         || !sidePanelNumberInput.length
         || !mobileRangeInput.length
         || !mobileNumberInput.length
+        || !replaceMobileCssInput.length
     ) {
         return;
     }
@@ -219,6 +273,7 @@ function bindSettingsUi() {
     sidePanelNumberInput.off(".fuit");
     mobileRangeInput.off(".fuit");
     mobileNumberInput.off(".fuit");
+    replaceMobileCssInput.off(".fuit");
 
     desktopRangeInput.on("input.fuit change.fuit", (event) => {
         saveMinDeskChatSize(event.target.value);
@@ -244,6 +299,10 @@ function bindSettingsUi() {
         saveMaxMobileAdjust(event.target.value);
     });
 
+    replaceMobileCssInput.on("input.fuit change.fuit", (event) => {
+        saveReplaceMobileCss(event.target.checked);
+    });
+
     syncSettingsUi();
 }
 
@@ -259,6 +318,7 @@ async function renderSettingsPanel() {
         minSidePanelSize,
         maxMobileAdjust,
         extensionName: EXTENSION_NAME,
+        settingsRootId: SETTINGS_ROOT_ID,
         minDeskChatSizeMin: MIN_DESK_CHAT_SIZE,
         minDeskChatSizeMax: MAX_DESK_CHAT_SIZE,
         minSidePanelSizeMin: MIN_SIDE_PANEL_SIZE,
@@ -272,20 +332,39 @@ async function renderSettingsPanel() {
     bindSettingsUi();
 }
 
+let ticking = false;
+
+async function setViewportOffset() {
+    document.documentElement.style.setProperty(PROPERTY_DVH_OFFSET, `${window.visualViewport.offsetTop}px`);
+}
+
+async function requestScrollAnimationFrame() {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            setViewportOffset();
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+
 async function initializeExtension() {
     if (hasInitialized) {
         applySettingsToDocument();
+        applyMobileCssReplacement();
         syncSettingsUi();
         return;
     }
 
     hasInitialized = true;
     applySettingsToDocument();
+    applyMobileCssReplacement();
     await renderSettingsPanel();
 
     if (!hasBoundResize) {
         hasBoundResize = true;
-        window.addEventListener("resize", applySettingsToDocument, { passive: true });
+        window.visualViewport.addEventListener("resize", applySettingsToDocument, { passive: true });
+        window.visualViewport.addEventListener('scroll', requestScrollAnimationFrame, { passive: true });
     }
 
     console.debug(`[${EXTENSION_NAME}] activated`);
@@ -296,6 +375,7 @@ export function activate() {
 
     // Apply the current CSS variables and classes immediately when the extension is enabled.
     applySettingsToDocument();
+    applyMobileCssReplacement();
 
     // Delay the full extension initialization until the app is ready.
     eventSource.on(event_types.APP_INITIALIZED, () => {

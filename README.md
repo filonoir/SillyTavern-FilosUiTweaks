@@ -8,20 +8,15 @@ It has been tested only with the default SillyTavern UI.
 
 ## Requirements
 
-- SillyTavern `1.17.0` or newer
+- SillyTavern `1.15.0` or newer
 
 ## Where to find the settings
 
 Open SillyTavern, then go to the extensions settings area.  
 This extension adds a drawer named **Filos UI Tweaks**.
 
-Each setting has:
-
-- a slider
-- a numeric input
-- live preview / immediate application
-
-If you set a control to its minimum value, that setting is treated as disabled. The UI will dim the row, hide the number input, and show `off` instead of `px`.
+If you set a slider control to its minimum value, that setting is treated as disabled.
+The UI will dim the user input and show `off` instead of `px`.
 
 ## Screen size logic
 
@@ -35,10 +30,7 @@ The mobile adjustment setting only works on screens at or below `1000px`.
 
 ## Settings
 
-### Minimum desktop chat size
-
-Default: `950px`  
-Range: `600px` to `1000px`  
+### Minimum desktop chat size 
 
 This sets a minimum width for the main chat area on desktop and other large screens.
 
@@ -49,9 +41,6 @@ Use it if you want:
 - more consistent large-screen spacing
 
 ### Minimum desktop sidebar size
-
-Default: `300px`  
-Range: `300px` to `500px`  
 
 This sets a minimum width for the left and right side panels, that is the the response configuration and character cards columns.
 If the main chat area is too large, these panels can become too narrow to use comfortably.
@@ -64,16 +53,24 @@ Note: this setting interacts with the desktop chat width. A larger desktop chat 
 
 ### Mobile adjustment maximum screen size
 
-Default: `700px`  
-Range: `300px` to `1000px`  
-
 This enables a mobile-specific UI adjustment for screens up to the selected width.
 
-When active, the extension currently:
+When active, the extension:
 
 - decreases top bar icon size
 - decreases bottom form icon size
 - hides message avatars
-- restructures the character name row to stack more cleanly on narrow screens
+- restructures the character name row stacking
 
-Use it if you want the interface to stay denser and cleaner on phones or narrow tablet widths.
+Use it if you want the interface to stay denser on phones or other small screens.
+
+### Replace mobile CSS
+
+This replaces the default mobile CSS with an opinionated version that contains some tweaks, especially for large iPad screens.
+
+**Why this needed:** The default mobile styles appear broken on large iPad screens, such as an iPad Pro, making the chat almost unusable.
+This is mainly because a set of styles was added to the end of the default mobile-styles CSS file labeled "iOS specific."
+The problem is that these iOS-specific styles seem to depend on the other mobile styles, which are only enabled with a max-width of 1000px. 
+However, the iOS-specific styles are always enabled for iOS.
+If the screen is larger than 1000px, the iOS-specific styles are applied, but the other styles are missing.
+This results in broken behavior for most dialogs.

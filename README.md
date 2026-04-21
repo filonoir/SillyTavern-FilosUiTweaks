@@ -2,7 +2,7 @@
 
 A small, opinionated SillyTavern extension that adjusts how the UI behaves on desktop and mobile-sized screens.
 
-It also fixes some quirks on iOS devices, especially on large iPads such as the iPad Pro.
+It also fixes some quirks on iOS devices, especially in landscape mode or on large iPads such as the iPad Pro 13".
 
 It has been tested only with the default SillyTavern UI.
 
@@ -66,11 +66,18 @@ Use it if you want the interface to stay denser on phones or other small screens
 
 ### Replace mobile CSS
 
-This replaces the default mobile CSS with an opinionated version that contains some tweaks, especially for large iPad screens.
+This replaces the default mobile CSS with an opinionated version that contains some tweaks, especially for large iPad screens such as the iPad Pro 13".
 
-**Why this needed:** The default mobile styles appear broken on large iPad screens, such as an iPad Pro, making the chat almost unusable.
-This is mainly because a set of styles was added to the end of the default mobile-styles CSS file labeled "iOS specific."
-The problem is that these iOS-specific styles seem to depend on the other mobile styles, which are only enabled with a max-width of 1000px. 
-However, the iOS-specific styles are always enabled for iOS.
+**Why this needed:** The default mobile styles appear broken on large iPad screens, such as an iPad Pro, making the UI almost unusable.
+This is mainly because a set of styles is added to the end of the default mobile-styles CSS file labeled `/*iOS specific*/`.
+The problem is that these iOS specific styles seem to depend on the other mobile styles, which are only enabled with a max-width of 1000px.
+
+The 13" iPad PRO has a CSS Pixel ratio of 1376 x 1032, which means that the whole block `@media screen and (max-width: 1000px)` is not present.
+Also most smaller iPads in Landscape mode have a CSS width of > 1000px.
+
+Currently the iOS-specific styles are always enabled for iOS, i.e. for all iPads.
 If the screen is larger than 1000px, the iOS-specific styles are applied, but the other styles are missing.
 This results in broken behavior for most dialogs.
+
+The simplest fix is to combine the whole block `/*iOS specific*/` `@supports (-webkit-touch-callout: none)` with another `@media screen and (max-width: 1000px)`,
+which is what his extension currently does if **Replace mobile CSS** is enabled.
